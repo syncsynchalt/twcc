@@ -131,7 +131,7 @@ static reg_t resolve_statement(regs_in_use_t in_use, const ast_node *s)
 
     switch ((int)s->tok_type) {
         case TOK_NUM:
-            if (s->type == TYPE_INT) {
+            if (s->type == NODE_INT) {
                 if (s->ival <= 0xffff) {
                     reg1 = alloc_int_register(in_use);
                     fprintf(asmout, "    mov x%d, #0x%lx\n", reg1.ireg, s->ival);
@@ -139,7 +139,7 @@ static reg_t resolve_statement(regs_in_use_t in_use, const ast_node *s)
                 } else {
                     die("xxx int size not yet handled");
                 }
-            } else if (s->type == TYPE_FLT) {
+            } else if (s->type == NODE_FLT) {
                 reg1 = alloc_flt_register(in_use);
                 reg2 = alloc_int_register(in_use);
                 add_to_data_section("flt_const_%d: .double %lf", ++flt_constant_ctr, s->fval);
