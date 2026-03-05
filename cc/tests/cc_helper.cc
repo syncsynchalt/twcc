@@ -35,7 +35,7 @@ std::string compile_and_run(const std::string &program, int expect_retcode)
     file.close();
 
     char cmd[1024];
-    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../ghostcc -o %s.o %s.c", t_file, t_file);
+    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -o %s.o %s.c", t_file, t_file);
     int rc = system(cmd);
     if (rc) {
         std::cerr << "Failed to run command " << cmd << std::endl;

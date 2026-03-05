@@ -17,11 +17,11 @@ void usage(int argc, char **argv)
 
 static FILE *preprocess_file(const char *filename, char **include_paths)
 {
-    char ppout[256] = "/tmp/ghostpp.tmp.XXXXXX";
+    char ppout[256] = "/tmp/twpp.tmp.XXXXXX";
     mkstemp(ppout);
     char cmd[1024];
 
-    snprintf(cmd, sizeof(cmd), "ghostpp -o %s", ppout);
+    snprintf(cmd, sizeof(cmd), "twpp -o %s", ppout);
     size_t i, l;
     for (i = 0; include_paths[i]; i++) {
         l = strlen(cmd);
@@ -43,7 +43,7 @@ static FILE *preprocess_file(const char *filename, char **include_paths)
 
 static void as_out(const ast_node *ast, char *file, size_t file_sz)
 {
-    snprintf(file, file_sz, "/tmp/ghostcc.tmp.XXXXXX");
+    snprintf(file, file_sz, "/tmp/twcc.tmp.XXXXXX");
     mkstemp(file);
 
     FILE *f = fopen(file, "w");

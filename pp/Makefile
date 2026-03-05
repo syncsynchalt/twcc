@@ -4,7 +4,7 @@ OBJ=$(filter-out y.tab.o, $(patsubst %.c,%.o,$(SRC))) y.tab.o
 CFLAGS=-Werror -std=gnu89 -g -I../lib
 LDFLAGS=-L../lib -lcommon -lm
 
-all: ghostpp
+all: twpp
 
 test: all
 	$(MAKE) -C tests test
@@ -12,7 +12,7 @@ test: all
 ../lib/libcommon.a:
 	$(MAKE) -C ../lib libcommon.a
 
-ghostpp: $(OBJ) ../lib/libcommon.a
+twpp: $(OBJ) ../lib/libcommon.a
 	cc -o $@ $^ $(LDFLAGS)
 
 y.tab.c: pp_grammar.y
@@ -20,5 +20,5 @@ y.tab.c: pp_grammar.y
 	yacc -d $^
 
 clean:
-	rm -f *.o ghostpp y.tab.h y.tab.c a.out
+	rm -f *.o twpp y.tab.h y.tab.c a.out
 	$(MAKE) -C tests $@

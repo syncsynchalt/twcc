@@ -2,8 +2,8 @@
 *.a
 a.out
 test-asm/prog-*
-pp/ghostpp
-cc/ghostcc
+pp/twpp
+cc/twcc
 */tests/tests
 y.tab.c
 y.tab.h

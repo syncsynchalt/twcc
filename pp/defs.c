@@ -476,7 +476,7 @@ defines *defines_init(void)
     defines_add(defs, "__UINT_LEAST8_MAX__", NULL, "255");
     defines_add(defs, "__UINT_LEAST8_TYPE__", NULL, "unsigned char");
     defines_add(defs, "__USER_LABEL_PREFIX__", NULL, "_");
-    defines_add(defs, "__VERSION__", NULL, "ghostcc @ 0.1");
+    defines_add(defs, "__VERSION__", NULL, "twcc @ 0.1");
     defines_add(defs, "__WCHAR_MAX__", NULL, "2147483647");
     defines_add(defs, "__WCHAR_TYPE__", NULL, "int");
     defines_add(defs, "__WCHAR_WIDTH__", NULL, "32");
