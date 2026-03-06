@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <libgen.h>
 #include "common.h"
 #include "defs.h"
 #include "preprocessor.h"
@@ -14,41 +15,47 @@ void usage(int argc, char **argv)
     die("Usage: %s infile [[-o] outfile] [-I include_path]", argv[0]);
 }
 
-const char **builtin_include_paths(size_t *num_include_paths)
+const char *find_include_path(int argc, char **argv)
 {
-    const char **include_paths = NULL;
+    char *include_path = NULL;
+    char *trypath = NULL;
+    char buf[256];
 
-    include_paths = malloc(sizeof(*include_paths) * (*num_include_paths + 6));
-    include_paths[(*num_include_paths)++] = strdup("/usr/include");
+    if (argv[0][0] == '/') {
+        trypath = strdup(argv[0]);
+    } else {
+        getcwd(buf, sizeof(buf));
+        trypath = malloc(strlen(buf) + 1 + strlen(argv[0]));
+        sprintf(trypath, "%s/%s", buf, argv[0]);
+    }
 
-    char buf[512];
-    FILE *p = popen("xcrun --show-sdk-path", "r");
-    if (p) {
-        if (fgets(buf, sizeof(buf), p) && strlen(buf)) {
-            const size_t len = strcspn(buf, "\r\n");
-            snprintf(buf+len, sizeof(buf)-len, "/usr/include");
-            include_paths[(*num_include_paths)++] = strdup(buf);
+    while (*trypath) {
+        include_path = malloc(strlen(trypath) + strlen("/include") + 1);
+        sprintf(include_path, "%s/include", trypath);
+        if (access(include_path, X_OK) == 0) {
+            return include_path;
         }
-        pclose(p);
-    }
-    p = popen("clang -print-resource-dir", "r");
-    if (p) {
-        if (fgets(buf, sizeof(buf), p) && strlen(buf)) {
-            const size_t len = strcspn(buf, "\r\n");
-            snprintf(buf+len, sizeof(buf)-len, "/include");
-            include_paths[(*num_include_paths)++] = strdup(buf);
+        free(include_path);
+        if (strrchr(trypath, '/')) {
+            strrchr(trypath, '/')[0] = '\0';
+        } else {
+            break;
         }
-        pclose(p);
     }
-    return include_paths;
+
+    fprintf(stderr, "Unable to find include path using all roots of path %s", dirname(argv[0]));
+    exit(1);
 }
 
 int main(const int argc, char **argv)
 {
-    int arg;
-    size_t num_include_paths = 0;
-    const char **include_paths = builtin_include_paths(&num_include_paths);
+    const char *base_include = find_include_path(argc, argv);
 
+    size_t num_include_paths = 0;
+    const char **include_paths = calloc(sizeof(char *), 6);
+    include_paths[num_include_paths++] = base_include;
+
+    int arg;
     while ((arg = getopt(argc, argv, "o:I:")) != -1) {
         if (arg == '?' || arg == ':') {
             usage(argc, argv);

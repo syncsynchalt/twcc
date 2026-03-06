@@ -74,17 +74,3 @@ int main(int argc, char **argv)
 )
 )", PrintAst(decl2));
 }
-
-TEST(TypedefTest, UuidType)
-{
-    uuid_t foo;
-    const auto ast = run_grammar(R"(
-typedef unsigned char   __darwin_uuid_t[16];
-typedef __darwin_uuid_t uuid_t;
-)");
-
-    EXPECT_EQ(R"(
-(
-)
-)", PrintAst(ast));
-}

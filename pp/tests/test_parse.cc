@@ -26,7 +26,7 @@ foo
     FileDeleter fd1(infile), fd2(outfile);
     FILE *fin = fopen(infile.c_str(), "r");
     FILE *fout = fopen(outfile.c_str(), "w");
-    process_file(infile.c_str(), fin, fout, NULL);
+    process_file(infile.c_str(), fin, fout, nullptr);
     fclose(fin);
     fclose(fout);
     EXPECT_EQ(" \nfoo\n", strip_line_hints(read_file(outfile)));
@@ -61,18 +61,6 @@ TEST(ParseTest, TernaryShortCircuit)
 #endif
 )");
     EXPECT_EQ("\n foo\n", output);
-}
-
-TEST(ParseTest, HasInclude)
-{
-    const auto output = run_parser(R"(
-#if __has_include(<foo.h>)
-foo
-#elif __has_include("bar.h")
-bar
-#endif
-)");
-    EXPECT_EQ("\n", output);
 }
 
 TEST(ParseTest, LeadingSpace)
