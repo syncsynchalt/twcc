@@ -1,6 +1,5 @@
 #include <errno.h>
 #include <string.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include "parse.h"
 #include "common.h"
@@ -54,10 +53,10 @@ static void as_out(const ast_node *ast, char *file, size_t file_sz)
     fclose(f);
 }
 
-static void run_as(const char *input, const char *output)
+static void run_as(const char *in, const char *out)
 {
     char cmd[128];
-    snprintf(cmd, sizeof(cmd), "as \"%s\" -o \"%s\"", input, output);
+    snprintf(cmd, sizeof(cmd), "as \"%s\" -o \"%s\"", in, out);
     const int ret = system(cmd);
     if (ret) {
         die("Error running assembler");

@@ -280,6 +280,8 @@ static void handle_pragma(const char *rest, const parse_state *state)
         // ignore
     } else if (STARTS_WITH(rest, "GCC poison ")) {
         // ignore
+    } else if (STARTS_WITH(rest, "GCC error \"Already found AvailabilityVersions")) {
+        // ignore
     } else {
         fprintf(stderr, "Warning: unrecognized pragma %s\n", rest);
     }

@@ -13,7 +13,7 @@ void add_to_data_section(const char *fmt, ...)
     va_start(ap, fmt);
 
     vsnprintf(buf, sizeof(buf), fmt, ap);
-    lines = realloc(lines, ++num_lines * sizeof(char *));
+    lines = realloc(lines, ++num_lines * sizeof(char *)); // NOLINT(*-suspicious-realloc-usage)
     lines[num_lines-1] = strdup(buf);
 }
 

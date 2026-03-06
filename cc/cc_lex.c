@@ -1,5 +1,4 @@
 #include "cc_lex.h"
-#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
@@ -85,7 +84,7 @@ static int read_next_line(void)
         if (lex_line[0] == '#') {
             const char *p = lex_line;
             p += strspn(p, "# ");
-            cc_lineno = strtol(p, NULL, 10);
+            cc_lineno = (int)strtol(p, NULL, 10);
             p += strspn(p, NUMERIC " ");;
             decode_str(p, filename_tmp, sizeof(filename_tmp));
             cc_filename = filename_tmp;

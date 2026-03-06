@@ -25,6 +25,12 @@ ast_node *run_grammar_on_file(const std::string &filename)
     return ast;
 }
 
+static void print_file_to_stderr(const std::string &filename)
+{
+    const auto in = std::ifstream(filename, std::ios::in);
+    std::cerr << in.rdbuf() << std::endl;
+}
+
 std::string compile_and_run(const std::string &program, int expect_retcode)
 {
     char t_file[256] = "/tmp/test.XXXXXX";
@@ -35,17 +41,19 @@ std::string compile_and_run(const std::string &program, int expect_retcode)
     file.close();
 
     char cmd[1024];
-    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -o %s.o %s.c", t_file, t_file);
+    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -o %s.o %s.c 2> %s.err", t_file, t_file, t_file);
     int rc = system(cmd);
     if (rc) {
         std::cerr << "Failed to run command " << cmd << std::endl;
+        print_file_to_stderr(t + ".err");
         return "cc died";
     }
 
-    snprintf(cmd, sizeof(cmd), "cc -o %s.runme %s.o", t_file, t_file);
+    snprintf(cmd, sizeof(cmd), "cc -o %s.runme %s.o 2> %s.err", t_file, t_file, t_file);
     rc = system(cmd);
     if (rc) {
         std::cerr << "Failed to run command " << cmd << std::endl;
+        print_file_to_stderr(t + ".err");
         return "linker died";
     }
 
@@ -62,6 +70,7 @@ std::string compile_and_run(const std::string &program, int expect_retcode)
     }
     unlink((t + ".c").c_str());
     unlink((t + ".o").c_str());
+    unlink((t + ".err").c_str());
     unlink((t + ".runme").c_str());
     unlink((t + ".out").c_str());
     return result;

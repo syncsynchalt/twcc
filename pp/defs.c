@@ -1,7 +1,6 @@
 #include "defs.h"
 
 #include <die.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -505,6 +504,10 @@ defines *defines_init(void)
     defines_add(defs, "__GNUC__", NULL, "4");
     defines_add(defs, "__GNUC_MINOR__", NULL, "0");
     defines_add(defs, "__GNUC_PATCHLEVEL__", NULL, "0");
+
+
+    // trying xxx
+    defines_add(defs, "__builtin_va_list", NULL, "long long");
 
     return defs;
 }
