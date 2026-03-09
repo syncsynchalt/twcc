@@ -1,4 +1,4 @@
-all: clean run-hello run-puts run-printf run-upper
+all: clean run-hello run-hello2 run-puts run-printf run-upper
 
 SYSLIBROOT=$(shell xcrun -sdk macosx --show-sdk-path)
 
@@ -9,6 +9,7 @@ run-%:
 	as $(sfile) -o $(ofile)
 	ld -o $(prog) $(ofile) -lSystem -syslibroot $(SYSLIBROOT)
 	./$(prog)
+	# @rm -f $(ofile)
 	@echo
 
 clean:

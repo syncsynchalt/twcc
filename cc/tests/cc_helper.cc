@@ -41,8 +41,17 @@ std::string compile_and_run(const std::string &program, int expect_retcode)
     file.close();
 
     char cmd[1024];
-    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -o %s.o %s.c 2> %s.err", t_file, t_file, t_file);
+
+    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -S %s.c > %s.S 2> %s.err", t_file, t_file, t_file);
     int rc = system(cmd);
+    if (rc) {
+        std::cerr << "Failed to run command " << cmd << std::endl;
+        print_file_to_stderr(t + ".err");
+        return "cc died making asm";
+    }
+
+    snprintf(cmd, sizeof(cmd), "PATH=../../pp:$PATH ../twcc -o %s.o %s.c 2> %s.err", t_file, t_file, t_file);
+    rc = system(cmd);
     if (rc) {
         std::cerr << "Failed to run command " << cmd << std::endl;
         print_file_to_stderr(t + ".err");
@@ -68,10 +77,12 @@ std::string compile_and_run(const std::string &program, int expect_retcode)
     while (std::getline(in, line)) {
         result += line + "\n";
     }
+    unlink((t + ".S").c_str());
     unlink((t + ".c").c_str());
     unlink((t + ".o").c_str());
     unlink((t + ".err").c_str());
     unlink((t + ".runme").c_str());
     unlink((t + ".out").c_str());
+    unlink(t.c_str());
     return result;
 }

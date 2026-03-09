@@ -41,10 +41,9 @@ int main(void)
 )", 5));
 }
 
-#if 0
 TEST(SimpleProgs, FunctionCall)
 {
-    EXPECT_EQ("Hello, world\n", compile_and_run(R"(
+    EXPECT_EQ("Hello, world\n\n", compile_and_run(R"(
 #include <stdio.h>
 
 int main(void)
@@ -54,5 +53,3 @@ int main(void)
 }
 )"));
 }
-
-#endif

@@ -72,9 +72,6 @@ int contains_token(const ast_node *node, token_type t)
 }
 
 #if 0
-
-
-
 std::string print_ast_node(const ast_node *node)
 {
     std::string result;

@@ -15,7 +15,7 @@ typedef enum {
     NODE_INIT_LIST,
     NODE_DECL,
     NODE_STRUCT_MEMBERS,
-    NODE_TRANSLATION_UNIT,
+    NODE_TRANSLATION_UNIT, // root node
     NODE_BITFIELD,
     NODE_PARAM_LIST,
     NODE_FUNCTION,
@@ -24,7 +24,7 @@ typedef enum {
     NODE_ABSTRACT_TYPE,
 } node_type;
 
-typedef struct _ast_node {
+typedef struct ast_node_ {
     node_type type;
     token_type tok_type;
 
@@ -33,11 +33,11 @@ typedef struct _ast_node {
     double fval;
     unsigned char cval;
 
-    struct _ast_node *left;
-    struct _ast_node *right;
+    struct ast_node_ *left;
+    struct ast_node_ *right;
 
-    struct _ast_node **list;
-    size_t list_len;
+    struct ast_node_ **list;
+    int list_len;
 } ast_node;
 
 extern ast_node *make_ast_node(const token t, ast_node *left, ast_node *right);

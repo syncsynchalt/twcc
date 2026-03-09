@@ -1,5 +1,5 @@
 .global _main
-.extern _puts, _printf, _exit
+.extern _puts, _exit
 
 _main:
     adr x0, 1f

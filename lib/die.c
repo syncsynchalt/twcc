@@ -1,8 +1,9 @@
 #include "die.h"
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "common.h"
+#include <stdarg.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdio.h>
 
 void die(const char *msg, ...)
 {
@@ -16,5 +17,5 @@ void die(const char *msg, ...)
         fprintf(stderr, "   at %s:%d\n", current_file, current_lineno);
         fprintf(stderr, "   line: %s\n", current_line);
     }
-    exit(1);
+    assert(!"died");
 }

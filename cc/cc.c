@@ -71,6 +71,8 @@ int main(const int argc, char **argv)
     int pp_only = 0;
     int as_only = 0;
 
+    setbuf(stdout, NULL);
+
     while ((arg = getopt(argc, argv, "ESo:I:")) != -1) {
         if (arg == '?' || arg == ':') {
             usage(argc, argv);
